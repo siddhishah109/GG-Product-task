@@ -4,18 +4,19 @@ import { Pagination } from '@mui/material';
 import axios from 'axios';
 import Papa from 'papaparse';
 
-const Tables = () => {
+const Tables = ({ searchTerm }) => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
+  // const [searchTerm, setSearchTerm] = useState('');
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     fetchData();
-  }, [page, itemsPerPage]);
+    console.log("search",searchTerm)
+  }, [page, itemsPerPage,searchTerm]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -67,7 +68,7 @@ const Tables = () => {
         label="Search Products"
         variant="outlined"
         value={searchTerm}
-        onChange={(event) => setSearchTerm(event.target.value)}
+        // onChange={(event) => setSearchTerm(event.target.value)}
       />
       <Button variant="contained" onClick={handleSearch}>
         Search

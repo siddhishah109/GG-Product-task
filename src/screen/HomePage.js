@@ -1,10 +1,15 @@
-import React from 'react'
+import React ,{useState}from 'react'
 import Tables from '../components/tables'
+import NavB from '../components/NavB'
 const HomePage = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
   return (
     <div>
-        HomePage
-        <Tables/>
+        <NavB onSearch={handleSearch}/>
+        <Tables searchTerm={searchTerm}/>
     </div>
   )
 }
