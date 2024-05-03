@@ -1,8 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Button, CircularProgress } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, tableCellClasses ,TableHead, TableRow, Paper, TextField, Button, CircularProgress } from '@mui/material';
 import { Pagination } from '@mui/material';
 import axios from 'axios';
 import Papa from 'papaparse';
+import { styled } from '@mui/material/styles';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
 
 const Tables = ({ searchTerm }) => {
   const [products, setProducts] = useState([]);
@@ -12,6 +34,8 @@ const Tables = ({ searchTerm }) => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  
+  
 
   useEffect(() => {
     fetchData();
@@ -35,12 +59,6 @@ const Tables = ({ searchTerm }) => {
     }
   };
   
-
-  const handleSearch = () => {
-    setPage(1); 
-    fetchData();
-  };
-
   const handlePageChange = (event, value) => {
     console.log('page',value)
     setPage(value);
@@ -64,68 +82,68 @@ const Tables = ({ searchTerm }) => {
 
   return (
     <div>
-      <TextField
-        label="Search Products"
-        variant="outlined"
-        value={searchTerm}
-        // onChange={(event) => setSearchTerm(event.target.value)}
-      />
-      <Button variant="contained" onClick={handleSearch}>
-        Search
-      </Button>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Price</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  <CircularProgress />
-                </TableCell>
-              </TableRow>
-            ) : error ? (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  {error}
-                </TableCell>
-              </TableRow>
-            ) : (
-              products.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>{product.id}</TableCell>
-                  <TableCell>{product.title}</TableCell>
-                  <TableCell>{product.description}</TableCell>
-                  <TableCell>{product.price}</TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+     
+     <TableContainer component={Paper} className='tabbb'>
+  <Table>
+    <TableHead>
+      <StyledTableRow>
+        <StyledTableCell>ID</StyledTableCell>
+        <StyledTableCell>Name</StyledTableCell>
+        <StyledTableCell>Description</StyledTableCell>
+        <StyledTableCell>Price</StyledTableCell>
+      </StyledTableRow>
+    </TableHead>
+    <TableBody>
+      {loading ? (
+        <TableRow>
+          <TableCell colSpan={4} align="center">
+            <CircularProgress />
+          </TableCell>
+        </TableRow>
+      ) : error ? (
+        <TableRow>
+          <TableCell colSpan={4} align="center">
+            {error}
+          </TableCell>
+        </TableRow>
+      ) : (
+        products.map((product) => (
+          <StyledTableRow key={product.id}>
+            <StyledTableCell>{product.id}</StyledTableCell>
+            <StyledTableCell>{product.title}</StyledTableCell>
+            <StyledTableCell>{product.description}</StyledTableCell>
+            <StyledTableCell>{product.price}</StyledTableCell>
+          </StyledTableRow>
+        ))
+      )}
+    </TableBody>
+  </Table>
+</TableContainer>
+
       <Pagination
+        className='paggg'
         count={totalPages}
         page={page}
         onChange={handlePageChange}
         variant="outlined"
         shape="rounded"
+       
       />
+      <div className='lim'>
+     <div className='lim2' >
+     <span>Items Per Page</span>
       <TextField
-        label="Items Per Page"
         variant="outlined"
         type="number"
         value={itemsPerPage}
+        className='ipp'
         onChange={handleItemsPerPageChange}
       />
+     </div>
       <Button variant="contained" onClick={handleDownloadCSV}>
         Download CSV
       </Button>
+      </div>
     </div>
   );
 };
