@@ -20,9 +20,7 @@ const Tables = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`https://dummyjson.com/products?limit=${itemsPerPage}&skip=${(page - 1) * itemsPerPage}`);
-      console.log("item pp",itemsPerPage)
-      console.log("skip",(page - 1) * itemsPerPage)
+      const response = await axios.get(`https://dummyjson.com/products/search?q=${searchTerm}&limit=${itemsPerPage}&skip=${(page - 1) * itemsPerPage}`);
       if (response.data && response.data.products) {
         setProducts(response.data.products);
         setTotalPages(Math.ceil(response.data.total / itemsPerPage));
@@ -36,32 +34,14 @@ const Tables = () => {
     }
   };
   
-  const fetchData1 = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`https://dummyjson.com/products/search?q=${searchTerm}`);
-      console.log(searchTerm)
-      if (response.data && response.data.products) {
-        setProducts(response.data.products);
-        console.log("response", response.data)
-        setTotalPages(Math.ceil(response.data.total / itemsPerPage));
-      } else {
-        setError('Error fetching data. Please try again later.');
-      }
-      setLoading(false);
-    } catch (error) {
-      setError('Error fetching data. Please try again later.');
-      setLoading(false);
-    }
-  };
 
   const handleSearch = () => {
     setPage(1); 
-    fetchData1();
+    fetchData();
   };
 
   const handlePageChange = (event, value) => {
-    console.log('---------------',value);
+    console.log('page',value)
     setPage(value);
   };
 
