@@ -120,6 +120,7 @@ const Tables = ({ searchTerm }) => {
   </Table>
 </TableContainer>
 
+      <div className='pap'> 
       <Pagination
         className='paggg'
         count={totalPages}
@@ -129,6 +130,8 @@ const Tables = ({ searchTerm }) => {
         shape="rounded"
        
       />
+      <span>Page No : {page}</span>
+      </div>
       <div className='lim'>
      <div className='lim2' >
      <span>Items Per Page</span>
